@@ -49,8 +49,8 @@ let remindersController = {
   delete: (req, res) => {
     // implement this code
    let reminderToFind = req.params.id
-   const remidnerDatabaseID = Number(reminderTofind) - 1
-   if (Number(reminderToFind) === database['cindy'].reminder[remidnerDatabaseID]){
+   const remidnerDatabaseID = Number(reminderToFind) - 1
+   if (Number(reminderToFind) === database['cindy'].reminders[remidnerDatabaseID]){
     database.cindy.reminders.splice(remidnerDatabaseID, 1)
    }
    console.log(database)
