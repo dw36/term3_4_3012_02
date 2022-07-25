@@ -7,6 +7,7 @@
       <strong><%= reminderItem.title %>: </strong>
       <%= reminderItem.description %>
       || Completed:
+      <!-- reason why using ejs because we can use logic in ejs but html cannot-->
       <% if (reminderItem.completed == true) { %>
         <span class="badge badge-success">True</span>
       <% } else if (reminderItem.completed == false) { %>

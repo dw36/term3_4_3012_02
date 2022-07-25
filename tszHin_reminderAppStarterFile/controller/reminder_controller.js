@@ -8,7 +8,8 @@ let remindersController = {
   new: (req, res) => {
     res.render("reminder/create");
   },
-
+ 
+  // this function here is the refers to the index.js' CASE 5, ./reminder/:id
   listOne: (req, res) => {
     let reminderToFind = req.params.id;
     let searchResult = database.cindy.reminders.find(function (reminder) {
@@ -20,15 +21,16 @@ let remindersController = {
       res.render("reminder/index", { reminders: database.cindy.reminders });
     }
   },
-
   create: (req, res) => {
     let reminder = {
+      // here has +1 because it will count the user's database length and there is non, means zero.
       id: database.cindy.reminders.length + 1,
       title: req.body.title,
       description: req.body.description,
       completed: false,
     };
     database.cindy.reminders.push(reminder);
+    // the created data will be redirected to the path ("<path>") as below
     res.redirect("/reminders");
   },
 
@@ -46,6 +48,9 @@ let remindersController = {
 
   delete: (req, res) => {
     // Implement this code
+    database.cindy.reminders.splice(reminder);
+    console.log(database)
+    res.redirect("reminders");
   },
 };
 
