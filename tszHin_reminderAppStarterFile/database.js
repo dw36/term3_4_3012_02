@@ -6,7 +6,7 @@ let Database = {
         ]
     },
     alex: {
-        reminders: [{id: 4, title:"alex tile", description: "about Alex!~", completed: false}]
+        //reminders: [{id: 4, title:"alex tile", description: "about Alex!~", completed: false}]
     },
 }
 

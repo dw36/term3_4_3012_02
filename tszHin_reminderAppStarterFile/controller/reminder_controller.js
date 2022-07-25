@@ -44,14 +44,34 @@ let remindersController = {
 
   update: (req, res) => {
     // implement this code
+    let reminderToFind = req.params.id
+    const reminderDatabaseID = Number(reminderToFind) - 1
+    console.log(reminderToFind)
+    let editData = {
+      title: req.body.title,
+      description: req.body.description,
+      completed: req.body.completed,
+    };
+    console.log(database['cindy'].reminders[reminderDatabaseID]['id'])
+    if(Number(reminderToFind) === database['cindy'].reminders[reminderDatabaseID]['id']) {
+      database.cindy.reminders[reminderDatabaseID].title = editData.title
+      database.cindy.reminders[reminderDatabaseID].description = editData.description
+      if(editData.completed === 'false') {
+        database.cindy.reminders[reminderDatabaseID].completed = false
+      } else {
+        database.cindy.reminders[reminderDatabaseID].completed = true
+      }
+    }
+    console.log(database.cindy.reminders)
+    res.redirect("/reminders");
   },
 
   delete: (req, res) => {
     // implement this code
    let reminderToFind = req.params.id
-   const remidnerDatabaseID = Number(reminderToFind) - 1
-   if (Number(reminderToFind) === database['cindy'].reminders[remidnerDatabaseID]){
-    database.cindy.reminders.splice(remidnerDatabaseID, 1)
+   const remindnerDatabaseID = Number(reminderToFind) - 1
+   if (Number(reminderToFind) === database['cindy'].reminders[remindnerDatabaseID]){
+    database.cindy.reminders.splice(remindnerDatabaseID, 1)
    }
    console.log(database)
    res.redirect("/reminders");
