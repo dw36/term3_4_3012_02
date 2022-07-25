@@ -47,10 +47,14 @@ let remindersController = {
   },
 
   delete: (req, res) => {
-    // Implement this code
-    database.cindy.reminders.splice(reminder);
-    console.log(database)
-    res.redirect("reminders");
+    // implement this code
+   let reminderToFind = req.params.id
+   const remidnerDatabaseID = Number(reminderTofind) - 1
+   if (Number(reminderToFind) === database['cindy'].reminder[remidnerDatabaseID]){
+    database.cindy.reminders.splice(remidnerDatabaseID, 1)
+   }
+   console.log(database)
+   res.redirect("/reminders");
   },
 };
 

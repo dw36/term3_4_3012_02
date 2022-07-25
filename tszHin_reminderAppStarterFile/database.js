@@ -1,7 +1,8 @@
 let Database = {
     cindy: {
         reminders: [{id: 1, title: "abc", description: "abcabc", completed: false},
-                     {id: 1, title: "cindySecondTile", description: "cindy Second description", completed: true}
+                     {id: 2, title: "cindy_02_Title", description: "cindy_02_description", completed: true},
+                     {id: 3, title: "cindy_03_Title", description: "cindy   03   description", completed: true}
         ]
     },
     alex: {
