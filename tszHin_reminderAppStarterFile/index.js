@@ -2,18 +2,30 @@ const express = require("express");
 const app = express();
 const path = require("path");
 const ejsLayouts = require("express-ejs-layouts");
+const session = require("express-session")
 const reminderController = require("./controller/reminder_controller");
 const authController = require("./controller/auth_controller");
 
+
 app.use(express.static(path.join(__dirname, "public")));
-
-app.use(express.urlencoded({ extended: false }));
-
+//app.use(express.urlencoded({ extended: false }));
 app.use(ejsLayouts);
-
 app.set("view engine", "ejs");
 
 // Routes start here
+app.use(
+  session({
+    secret: "secret",
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      httpOnly: true,
+      secure: false,
+      maxAge: 24 * 60 * 60 * 1000,
+    },
+  })
+);
+
 
 // case 2: User goes to localhost:3001(the port we defined)/reminders -> Show a list of remiders
 app.get("/reminders", reminderController.list);
