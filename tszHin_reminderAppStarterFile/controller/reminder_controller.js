@@ -14,6 +14,7 @@ let remindersController = {
     // this function here is the refers to the index.js' CASE 5, ./reminder/:id
   listOne: (req, res) => {
     let reminderToFind = req.params.id;
+    console.log(reminderToFind)
     const userData = Number(req.user.id) - 1
     let searchResult = database[userData].reminders.find(function (reminder) {
       return reminder.id == reminderToFind;
@@ -44,7 +45,7 @@ let remindersController = {
 
   edit: (req, res) => {
     let reminderToFind = req.params.id;
-    console.log(reminderToFind)
+    console.log(reminderDatabaseID)
     const userData = Number(req.user.id) - 1
     let searchResult = database[userData].reminders.find(function (reminder) {
       return reminder.id == reminderToFind;

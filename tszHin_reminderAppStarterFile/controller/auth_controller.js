@@ -12,11 +12,13 @@ let authController = {
 
   loginSubmit: (req, res) => {
     // implement
+    res.render("/dashboard")
   },
 
   registerSubmit: (req, res) => {
     // implement
   },
+  
 };
 
 module.exports = authController;
