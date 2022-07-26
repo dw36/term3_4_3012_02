@@ -3,7 +3,9 @@ let userModel = require("../database").userModel;
 
 let remindersController = {
   list: (req, res) => {
-    res.render("reminder/index", { reminders: database[1].reminders });
+    console.log(req.user.id)
+    const userData = Number(req.user.id) - 1
+    res.render("reminder/index", { reminders: database[userData].reminders });
   },
 
   new: (req, res) => {
@@ -12,26 +14,27 @@ let remindersController = {
     // this function here is the refers to the index.js' CASE 5, ./reminder/:id
   listOne: (req, res) => {
     let reminderToFind = req.params.id;
-
-    let searchResult = database[1].reminders.find(function (reminder) {
+    const userData = Number(req.user.id) - 1
+    let searchResult = database[userData].reminders.find(function (reminder) {
       return reminder.id == reminderToFind;
     });
     if (searchResult != undefined) {
       res.render("reminder/single-reminder", { reminderItem: searchResult });
     } else {
-      res.render("reminder/index", { reminders: database[1].reminders });
+      res.render("reminder/index", { reminders: database[userData].reminders });
     }
   },
 
   create: (req, res) => {
-    console.log(database[1].reminders)
+    const userData = Number(req.user.id) - 1
+    console.log(database[userData].reminders)
     let reminder = {
-      id: database[1].reminders.length + 1, // here has +1 because it will count the user's database length and there is non, means zero.
+      id: database[userData].reminders.length + 1, // here has +1 because it will count the user's database length and there is non, means zero.
       title: req.body.title,
       description: req.body.description,
       completed: false,
     };
-    database[1].reminders.push(reminder);
+    database[userData].reminders.push(reminder);
     // the created data will be redirected to the path ("<path>") as below
     res.redirect("/reminders");
   },
@@ -39,7 +42,8 @@ let remindersController = {
   edit: (req, res) => {
     let reminderToFind = req.params.id;
     console.log(reminderToFind)
-    let searchResult = database[1].reminders.find(function (reminder) {
+    const userData = Number(req.user.id) - 1
+    let searchResult = database[userData].reminders.find(function (reminder) {
       return reminder.id == reminderToFind;
     });
     res.render("reminder/edit", { reminderItem: searchResult });
@@ -47,31 +51,33 @@ let remindersController = {
 
   update: (req, res) => {             // implement this code
     let reminderToFind = req.params.id
+    const userData = Number(req.user.id) - 1
     const reminderDatabaseID = Number(reminderToFind) - 1             
     let editData = {
       title: req.body.title,
       description: req.body.description,
       completed: req.body.completed,
     };
-    console.log(database[1].reminders[reminderDatabaseID].id)
-    if(Number(reminderToFind) === database[1].reminders[reminderDatabaseID].id) {
-      database[1].reminders[reminderDatabaseID].title = editData.title
-      database[1].reminders[reminderDatabaseID].description = editData.description
+    console.log(database[userData].reminders[reminderDatabaseID].id)
+    if(Number(reminderToFind) === database[userData].reminders[reminderDatabaseID].id) {
+      database[userData].reminders[reminderDatabaseID].title = editData.title
+      database[userData].reminders[reminderDatabaseID].description = editData.description
       if(editData.completed === 'false') {
-        database[1].reminders[reminderDatabaseID].completed = false
+        database[userData].reminders[reminderDatabaseID].completed = false
       } else {
-        database[1].reminders[reminderDatabaseID].completed = true
+        database[userData].reminders[reminderDatabaseID].completed = true
       }
     }
-    console.log(database[1].reminders)
+    console.log(database[userData].reminders)
     res.redirect(`/reminder/${reminderToFind}`);
   },
 
-  delete: (req, res) => {    // implement this code
+  delete: (req, res) => {
+    const userData = Number(req.user.id) - 1    // implement this code
    let reminderToFind = req.params.id
    const remindnerDatabaseID = Number(reminderToFind) - 1
-   if (Number(reminderToFind) === database[1].reminders[remindnerDatabaseID].id){
-    database[1].reminders.splice(remindnerDatabaseID, 1)
+   if (Number(reminderToFind) === database[userData].reminders[remindnerDatabaseID].id){
+    database[userData].reminders.splice(remindnerDatabaseID, 1)
    }
    console.log(database)
    res.redirect("/reminders");
