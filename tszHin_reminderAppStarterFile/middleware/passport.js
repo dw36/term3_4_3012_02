@@ -7,6 +7,7 @@ const localLogin = new LocalStrategy(
     passwordField: "password",
   },
   (email, password, done) => {
+                                  //to scan the database if any user is matched
     const user = userController.getUserByEmailIdAndPassword(email, password);
     return user
       ? done(null, user)
