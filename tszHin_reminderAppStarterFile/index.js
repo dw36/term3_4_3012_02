@@ -8,7 +8,10 @@ const authController = require("./controller/auth_controller");
 
 
 app.use(express.static(path.join(__dirname, "public")));
-//app.use(express.urlencoded({ extended: false }));
+//app.use(express.json());
+//app.use(passport.initialize());
+//app.use(passport.session());
+app.use(express.urlencoded({ extended: true }));
 app.use(ejsLayouts);
 app.set("view engine", "ejs");
 
@@ -25,6 +28,10 @@ app.use(
     },
   })
 );
+
+// const passport = require("./middleware/passport");
+ const authRoute = require("./routes/authRoute");
+ const indexRoute = require("./routes/indexRoute");
 
 
 // case 2: User goes to localhost:3001(the port we defined)/reminders -> Show a list of remiders
