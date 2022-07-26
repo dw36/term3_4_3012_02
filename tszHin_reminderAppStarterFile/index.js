@@ -69,10 +69,6 @@ app.post("/reminder/update/:id", reminderController.update);
 app.post("/reminder/delete/:id", reminderController.delete);
 
 // Fix this to work with passport! The registration does not need to work, you can use the fake database for this.
-
-
-
-
 app.use("/", indexRoute)
 app.use("/auth", authRoute)
 
@@ -86,6 +82,6 @@ app.post("/register", authController.registerSubmit);
 // or we can set the port as a variable if needed
 app.listen(3001, function () {
   console.log(
-    "Server running. Visit: localhost:3001/reminders in your browser 🚀"
+    "Server running. Visit: localhost:3001/auth/login in your browser 🚀"
   );
 });
