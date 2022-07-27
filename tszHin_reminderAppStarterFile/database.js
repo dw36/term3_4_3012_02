@@ -40,7 +40,7 @@ let Database = [
       Database.push({
         id: DatabaseID,
         name: '',
-        //ppi: 'email',
+        ppi: '',
         role: 'user',
         password: password,
         reminders: [{}]
@@ -60,6 +60,7 @@ let Database = [
         id: DatabaseID,
         name: username,
         role:'user',
+        ppi:'',
         email: 'Login with Github',
         password: 'Login with Github',
         reminders: [{}]

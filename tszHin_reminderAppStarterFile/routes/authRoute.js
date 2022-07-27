@@ -6,6 +6,7 @@ const { forwardAuthenticated, ensureAuthenticated } = require("../middleware/che
 const router = express.Router();
 
 router.get("/login", forwardAuthenticated, (req, res) => res.render("auth/login"));
+
 router.post(
   "/login",
   passport.authenticate("local", {
@@ -15,37 +16,32 @@ router.post(
 );
 
 
-
 router.get('/auth/github',
   passport_github.authenticate('github', { scope: [ 'user:email' ] }));
-router.get('/github/callback', 
+
+  router.get('/github/callback', 
   passport_github.authenticate('github', { failureRedirect: '/auth/login' }),
   function(req, res) {
-    console.log(req.user.name)
-    // Successful authentication, redirect to dashboard.
-    res.render('dashboard', {
-      user: req.user.name
+     console.log(req.user.name)
+     // Successful authentication, redirect to dashboard.
+     res.render('dashboard', {
+      user: req.user.name,
+      url: req.user.ppi
     });
   });
 
 
-//  router.get("/dashboard", ensureAuthenticated, (req, res) => {
-//    res.render("dashboard", {
-//      user: req.user,
-//    });
-//  });
+  router.post(
+    "/register",
+    passport.authenticate("local", {
+      successRedirect: "/auth/login",
+      failureRedirect: "/auth/register",
+    })
+  )
 
+  router.get("/logout", (req, res) => {
+    req.logout();
+    res.redirect("/auth/login");
+  });
 
-
-router.post(
-  "/register",
-  passport.authenticate("local", {
-    successRedirect: "/auth/login",
-    failureRedirect: "/auth/register",
-  })
-)
-router.get("/logout", (req, res) => {
-  req.logout();
-  res.redirect("/auth/login");
-});
-module.exports = router;
+  module.exports = router;
