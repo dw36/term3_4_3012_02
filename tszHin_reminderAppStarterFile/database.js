@@ -40,15 +40,15 @@ let Database = [
       Database.push({
         id: DatabaseID,
         name: '',
-        //ppi: email,
-        //role: user,
+        //ppi: 'email',
+        role: 'user',
         password: password,
         reminders: [{}]
       })
       console.log(Database)
   
       return email
-      throw new Error(`Couldn't find user with email: ${email}`);
+      //throw new Error(`Couldn't find user with email: ${email}`);
     },
     findByUser: (username) => {
       const user = Database.find((user) => user.name === username);
@@ -59,6 +59,7 @@ let Database = [
       Database.push({
         id: DatabaseID,
         name: username,
+        role:'user',
         email: 'Login with Github',
         password: 'Login with Github',
         reminders: [{}]
