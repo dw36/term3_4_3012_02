@@ -19,6 +19,9 @@ let authController = {
     // implement
   },
   
+  admin:(req, res) => {
+    res.render("/admin")
+  }
 };
 
 module.exports = authController;

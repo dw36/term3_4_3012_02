@@ -1,6 +1,6 @@
-const userModel = require("../models/userModel").userModel;
-const database =require("../database").Database;
 
+const userModel = require("../database").userModel;
+const database = require("../database").Database;
 const getUserByEmailIdAndPassword = (email, password) => {
   let user = userModel.findOne(email, password);
   if (user) {
@@ -17,20 +17,33 @@ const getUserById = (id) => {
   }
   return null;
 };
-
 const getUserByUser = (username) => {
   let user = userModel.findByUser(username)
   if (user) {
     return user;
   }
   return null;
-}
+};
 function isUserValid(user, password) {
   return user.password === password;
 }
+const isUserAdmin = (role) => { // this function checks if the person has a role of admin
+   return (req, res, next) => {
+     for (data in role) {
+       if (req.user.name === role[data].name){
+         if (req.user.role === 'admin') {
+           next()
+         }
+       }
+       // return res.status(401).send('Your are not an admin')
+     }
+     // return res.status(401).send('Your are not an admin')
+   } 
+ }
 
 module.exports = {
   getUserByEmailIdAndPassword,
   getUserById,
-  getUserByUser
+  getUserByUser,
+  isUserAdmin
 };

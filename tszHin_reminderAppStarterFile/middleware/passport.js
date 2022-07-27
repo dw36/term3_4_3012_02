@@ -1,58 +1,50 @@
-const passport = require("passport");
-const LocalStrategy = require("passport-local").Strategy;
-const GithubStrategy - require("passport-github2").Strategy;
-const userController = require("../controllers/userController");
-require('dotenv').config()
-const GITHUB_CLENT_ID = process.env.GITHB_CLIENT_ID;
-const GITHUB_CLENT_SECRET = process.env.GITHUB_CLENT_SECRET;
-const localLogin = new LocalStrategy(
-  {
-    usernameField: "email",
-    passwordField: "password",
-  },
-  (email, password, done) => {
-                                  //to scan the database if any user is matched
-    const user = userController.getUserByEmailIdAndPassword(email, password);
-    return user
-      ? done(null, user)
-      : done(null, false, {
-          message: "Your login details are not valid. Please try again",
-        });
-  }
-);
+const { compile } = require("ejs");
+const express = require("express");
+const router = express.Router();
+const { ensureAuthenticated, isAdmin } = require("../middleware/checkAuth");
+const findAdmin = require("../controller/userController").isUserAdmin;
+const adminDatabase = require("../database").Database
 
-const local_login = passport.use(localLogin)
 
-const GitHub = new GitHubStrategy({
-  clientID: GITHUB_CLIENT_ID,
-  clientSecret: GITHUB_CLIENT_SECRET,
-  callbackURL: "http://localhost:3001/auth/github/callback"
-},
-function(accessToken, refreshToken, profile, done) {
-    // Check if User exists in the database
-  const user = userController.getUserByUser(profile.displayName);
-  return user
-    ? done(null, user)
-    : done(null, false, {
-        message: "Your login details are not valid. Please try again",
-      }); 
-}
-);
-
-const github = passport.use(GitHub)
-
-passport.serializeUser(function (user, done) {
-  console.log(user)
-  done(null, user.id);
+router.get("/reminders", ensureAuthenticated, (req, res) => {
+  res.render("reminders/index", {
+    user: req.user.name,
+  });
+ 
 });
 
-passport.deserializeUser(function (id, done) {
-  let user = userController.getUserById(id);
-  if (user) {
-    done(null, user);
-  } else {
-    done({ message: "User not found" }, null);
-  }
+router.get("/dashboard", ensureAuthenticated, (req, res) => {
+  res.render("dashboard", {
+    user: req.user.name,
+  });
 });
 
-module.exports = {local_login, github};
+router.get("/admin", ensureAuthenticated, findAdmin(adminDatabase), (req, res) => { 
+  req.sessionStore.all((err, sessions)=>{ //sessionStore.all gets all the active sessions stored into an object
+    if (err) {
+       console.log(err)
+     }
+     const activeSessions = JSON.parse(JSON.stringify(sessions))
+     // console.log(activeSessions)
+     for (ID in activeSessions) { // print out all the active session IDs
+       console.log(activeSessions[ID])
+
+     }
+     res.render("admin", {
+     user: req.user.name,
+     sessionID: activeSessions,
+     // revoke: revokeSession = () => { // destroy selected session
+     //   // document.querySelectorAll('a')
+     //   req.session.destroy()
+     //   console.log('triggered')
+
+     // }
+   });
+ })
+ });
+
+
+ router.get("/register", ensureAuthenticated, (req, res) => res.render("auth/register"));
+
+
+module.exports = router;
